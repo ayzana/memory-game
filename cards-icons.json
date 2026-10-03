@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "galaxy",
+    "url": "./assets/galaxy.png"
+  },
+  {
+    "id": 2,
+    "name": "spaceship",
+    "url": "./assets/spaceship.png"
+  },
+  {
+    "id": 3,
+    "name": "galaxy",
+    "url": "./assets/galaxy.png"
+  },
+  {
+    "id": 4,
+    "name": "spaceship",
+    "url": "./assets/spaceship.png"
+  },
+  {
+    "id": 5,
+    "name": "galaxy",
+    "url": "./assets/galaxy.png"
+  },
+  {
+    "id": 6,
+    "name": "spaceship",
+    "url": "./assets/spaceship.png"
+  },
+  {
+    "id": 7,
+    "name": "galaxy",
+    "url": "./assets/galaxy.png"
+  },
+  {
+    "id": 8,
+    "name": "spaceship",
+    "url": "./assets/spaceship.png"
+  }
+]

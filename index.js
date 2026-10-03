@@ -1,6 +1,11 @@
+import icons from "./cards-icons.json" with { type: "json" };
+
+let cards = [];
+let gridContainerEl;
+
 function createElement(tag, options = {}) {
   const el = document.createElement(tag);
-  if (options.clasName) el.clasName = options.clasName;
+  if (options.className) el.className = options.className;
   if (options.attrs) {
     for (const [key, val] of Object.entries(options.attrs)) {
       el.setAttribute(key, val);
@@ -66,10 +71,67 @@ function buildUI() {
   countersBar.appendChild(movesCounter);
   countersBar.appendChild(pairsCounter);
 
+  gridContainerEl = createElement("main", {
+    className: "game-grid",
+  });
+
   appContainer.appendChild(header);
   appContainer.appendChild(countersBar);
+  appContainer.appendChild(gridContainerEl);
 
   document.body.appendChild(appContainer);
+}
+
+function startNewGame() {
+  const deck = [];
+  for (let i = 0; i < 8; i++) {
+    deck.push({ id: i, icon: icons[i] });
+    deck.push({ id: i, icon: icons[i] });
+  }
+
+  const shuffledDeck = deck;
+  cards = [];
+
+  shuffledDeck.forEach((cardData, index) => {
+    const cardObj = {
+      index: index,
+      pairId: cardData.id,
+      icon: cardData.icon,
+      isFlipped: false,
+      isMatched: false,
+      element: null,
+    };
+
+    const wrapper = createElement("button", {
+      className: "card-wrapper",
+      attrs: {
+        type: "button",
+        "aria-label": `Карточка ${index + 1}`,
+      },
+      events: {
+        click: () => handleCardClick(index),
+      },
+    });
+
+    const inner = createElement("div", { className: "card-inner" });
+
+    const back = createElement("div", { className: "card-face card-back" });
+    const backPattern = createElement("div", {
+      className: "card-back-pattern",
+    });
+    back.appendChild(backPattern);
+
+    const front = createElement("div", { className: "card-face card-front" });
+
+    inner.appendChild(back);
+    inner.appendChild(front);
+    wrapper.appendChild(inner);
+
+    cardObj.element = wrapper;
+    cards.push(cardObj);
+
+    gridContainerEl.appendChild(wrapper);
+  });
 }
 
 function handleNewGameClick() {
@@ -78,4 +140,5 @@ function handleNewGameClick() {
 
 window.onload = function () {
   buildUI();
+  startNewGame();
 };

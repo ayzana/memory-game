@@ -5,6 +5,7 @@ let gridContainerEl;
 let flippedCards = [];
 let moves = 0;
 let pairs = 0;
+let selectCardsTime = 0;
 
 let movesValue;
 let pairsValue;
@@ -101,6 +102,11 @@ function shuffleArray(arr) {
   return result;
 }
 function startNewGame() {
+  if (selectCardsTime !== null) {
+    clearTimeout(selectCardsTime);
+    selectCardsTime = null;
+  }
+
   moves = 0;
   pairs = 0;
   flippedCards = [];
@@ -189,6 +195,15 @@ function handleCardClick(index) {
       pairs++;
       pairsValue.textContent = `${pairs} из 8`;
       flippedCards = [];
+    } else {
+      selectCardsTime = setTimeout(() => {
+        card1.isFlipped = false;
+        card2.isFlipped = false;
+        card1.element.classList.remove("flipped");
+        card2.element.classList.remove("flipped");
+        flippedCards = [];
+        selectCardsTime = null;
+      }, 1000);
     }
   }
 }

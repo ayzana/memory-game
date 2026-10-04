@@ -122,7 +122,7 @@ function startNewGame() {
 
   const shuffledDeck = shuffleArray(deck);
   cards = [];
-
+  gridContainerEl.replaceChildren();
   shuffledDeck.forEach((cardData, index) => {
     const cardObj = {
       index: index,

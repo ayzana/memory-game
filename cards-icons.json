@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "galaxy",
+    "url": "./assets/galaxy.png"
+  },
+  {
+    "id": 2,
+    "name": "spaceship",
+    "url": "./assets/spaceship.png"
+  },
+  {
+    "id": 3,
+    "name": "asteroid",
+    "url": "./assets/asteroid.png"
+  },
+  {
+    "id": 4,
+    "name": "moon",
+    "url": "./assets/moon.png"
+  },
+  {
+    "id": 5,
+    "name": "astronaut",
+    "url": "./assets/astronaut.png"
+  },
+  {
+    "id": 6,
+    "name": "saturn",
+    "url": "./assets/saturn.png"
+  },
+  {
+    "id": 7,
+    "name": "space-station",
+    "url": "./assets/space-station.png"
+  },
+  {
+    "id": 8,
+    "name": "venus",
+    "url": "./assets/venus.png"
+  }
+]

@@ -96,7 +96,7 @@ function startNewGame() {
     const cardObj = {
       index: index,
       pairId: cardData.id,
-      icon: cardData.icon,
+      icon: cardData.icon.url,
       isFlipped: false,
       isMatched: false,
       element: null,
@@ -115,13 +115,23 @@ function startNewGame() {
 
     const inner = createElement("div", { className: "card-inner" });
 
+    // Card Back
     const back = createElement("div", { className: "card-face card-back" });
     const backPattern = createElement("div", {
       className: "card-back-pattern",
     });
+
+    // appendSvgContent(backPattern, CARD_BACK_SVG);
     back.appendChild(backPattern);
 
-    const front = createElement("div", { className: "card-face card-front" });
+    // Card Front
+    const front = createElement("div", {
+      className: "card-face card-front",
+      attrs: {
+        style: `background: url(${cardObj.icon}) no-repeat center / cover `,
+      },
+    });
+    // appendSvgContent(front, cardData.icon);
 
     inner.appendChild(back);
     inner.appendChild(front);
@@ -132,6 +142,12 @@ function startNewGame() {
 
     gridContainerEl.appendChild(wrapper);
   });
+}
+
+function handleCardClick(index) {
+  console.log("rotete");
+  const card = cards[index];
+  card.element.classList.add("flipped");
 }
 
 function handleNewGameClick() {

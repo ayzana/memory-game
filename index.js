@@ -6,7 +6,7 @@ let flippedCards = [];
 let moves = 0;
 let pairs = 0;
 let selectCardsTime = 0;
-
+let gridActive = false;
 let movesValue;
 let pairsValue;
 
@@ -110,6 +110,9 @@ function startNewGame() {
   moves = 0;
   pairs = 0;
   flippedCards = [];
+  movesValue.textContent = "0";
+  pairsValue.textContent = "0 из 8";
+  gridActive = false;
 
   const deck = [];
   for (let i = 0; i < 8; i++) {
@@ -143,23 +146,19 @@ function startNewGame() {
 
     const inner = createElement("div", { className: "card-inner" });
 
-    // Card Back
     const back = createElement("div", { className: "card-face card-back" });
     const backPattern = createElement("div", {
       className: "card-back-pattern",
     });
 
-    // appendSvgContent(backPattern, CARD_BACK_SVG);
     back.appendChild(backPattern);
 
-    // Card Front
     const front = createElement("div", {
       className: "card-face card-front",
       attrs: {
         style: `background: url(${cardObj.icon}) no-repeat center / cover `,
       },
     });
-    // appendSvgContent(front, cardData.icon);
 
     inner.appendChild(back);
     inner.appendChild(front);
@@ -174,10 +173,10 @@ function startNewGame() {
 
 function handleCardClick(index) {
   const card = cards[index];
-  if (card.isFlipped || card.isMatched) return;
+  if (gridActive || card.isFlipped || card.isMatched) return;
   card.isFlipped = true;
   flippedCards.push(index);
-  console.log(flippedCards);
+
   card.element.classList.add("flipped");
 
   if (flippedCards.length === 2) {
@@ -196,12 +195,14 @@ function handleCardClick(index) {
       pairsValue.textContent = `${pairs} из 8`;
       flippedCards = [];
     } else {
+      gridActive = true;
       selectCardsTime = setTimeout(() => {
         card1.isFlipped = false;
         card2.isFlipped = false;
         card1.element.classList.remove("flipped");
         card2.element.classList.remove("flipped");
         flippedCards = [];
+        gridActive = false;
         selectCardsTime = null;
       }, 1000);
     }

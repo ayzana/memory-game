@@ -11,32 +11,32 @@
   },
   {
     "id": 3,
-    "name": "galaxy",
-    "url": "./assets/asteroid.jpg"
+    "name": "asteroid",
+    "url": "./assets/asteroid.png"
   },
   {
     "id": 4,
-    "name": "spaceship",
-    "url": "./assets/plutos-surface.jpg"
+    "name": "moon",
+    "url": "./assets/moon.png"
   },
   {
     "id": 5,
-    "name": "galaxy",
-    "url": "./assets/purple-sphere.jpg"
+    "name": "astronaut",
+    "url": "./assets/astronaut.png"
   },
   {
     "id": 6,
-    "name": "spaceship",
-    "url": "./assets/saturn.jpg"
+    "name": "saturn",
+    "url": "./assets/saturn.png"
   },
   {
     "id": 7,
-    "name": "galaxy",
+    "name": "space-station",
     "url": "./assets/space-station.png"
   },
   {
     "id": 8,
-    "name": "spaceship",
+    "name": "venus",
     "url": "./assets/venus.png"
   }
 ]

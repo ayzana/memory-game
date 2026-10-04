@@ -2,6 +2,12 @@ import icons from "./cards-icons.json" with { type: "json" };
 
 let cards = [];
 let gridContainerEl;
+let flippedCards = [];
+let moves = 0;
+let pairs = 0;
+
+let movesValue;
+let pairsValue;
 
 function createElement(tag, options = {}) {
   const el = document.createElement(tag);
@@ -57,16 +63,21 @@ function buildUI() {
     className: "counter-label",
     text: "Ходы",
   });
-
+  movesValue = createElement("span", { className: "counter-value", text: "0" });
   movesCounter.appendChild(movesLabel);
+  movesCounter.appendChild(movesValue);
 
   const pairsCounter = createElement("div", { className: "counter-item" });
   const pairsLabel = createElement("span", {
     className: "counter-label",
     text: "Найденные пары",
   });
-
+  pairsValue = createElement("span", {
+    className: "counter-value",
+    text: "0 из 8",
+  });
   pairsCounter.appendChild(pairsLabel);
+  pairsCounter.appendChild(pairsValue);
 
   countersBar.appendChild(movesCounter);
   countersBar.appendChild(pairsCounter);
@@ -90,6 +101,10 @@ function shuffleArray(arr) {
   return result;
 }
 function startNewGame() {
+  moves = 0;
+  pairs = 0;
+  flippedCards = [];
+
   const deck = [];
   for (let i = 0; i < 8; i++) {
     deck.push({ id: i, icon: icons[i] });
@@ -153,9 +168,30 @@ function startNewGame() {
 
 function handleCardClick(index) {
   const card = cards[index];
+  if (card.isFlipped || card.isMatched) return;
+  card.isFlipped = true;
+  flippedCards.push(index);
+  console.log(flippedCards);
   card.element.classList.add("flipped");
-}
 
+  if (flippedCards.length === 2) {
+    moves++;
+    movesValue.textContent = String(moves);
+    const card1 = cards[flippedCards[0]];
+    const card2 = cards[flippedCards[1]];
+    console.log(card1, card2);
+
+    if (card1.pairId === card2.pairId) {
+      card1.isMatched = true;
+      card2.isMatched = true;
+      card1.element.classList.add("matched");
+      card2.element.classList.add("matched");
+      pairs++;
+      pairsValue.textContent = `${pairs} из 8`;
+      flippedCards = [];
+    }
+  }
+}
 function handleNewGameClick() {
   startNewGame();
 }

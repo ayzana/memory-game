@@ -156,7 +156,7 @@ function startNewGame() {
     const front = createElement("div", {
       className: "card-face card-front",
       attrs: {
-        style: `background: url(${cardObj.icon}) no-repeat center / cover `,
+        style: `background: url(${cardObj.icon}) no-repeat center / contain `,
       },
     });
 

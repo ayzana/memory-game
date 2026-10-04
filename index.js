@@ -81,7 +81,14 @@ function buildUI() {
 
   document.body.appendChild(appContainer);
 }
-
+function shuffleArray(arr) {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
 function startNewGame() {
   const deck = [];
   for (let i = 0; i < 8; i++) {
@@ -89,7 +96,7 @@ function startNewGame() {
     deck.push({ id: i, icon: icons[i] });
   }
 
-  const shuffledDeck = deck;
+  const shuffledDeck = shuffleArray(deck);
   cards = [];
 
   shuffledDeck.forEach((cardData, index) => {
@@ -145,7 +152,6 @@ function startNewGame() {
 }
 
 function handleCardClick(index) {
-  console.log("rotete");
   const card = cards[index];
   card.element.classList.add("flipped");
 }

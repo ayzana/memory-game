@@ -195,7 +195,7 @@ function handleCardClick(index) {
       pairsValue.textContent = `${pairs} из 8`;
       flippedCards = [];
       console.log(pairs);
-      if (pairs === 8) {
+      if (pairs === 1) {
         setTimeout(() => {
           createVictoryModal();
           console.log("WIN");
@@ -226,10 +226,45 @@ function createVictoryModal() {
     className: "modal-title",
     text: "Победа!",
   });
+
+  const actions = createElement("div", { className: "modal-actions" });
+  const newGameButton = createElement("button", {
+    className: "btn",
+    text: "Новая игра",
+    events: {
+      click: () => {
+        closeModal();
+        startNewGame();
+      },
+    },
+  });
+  const closeButton = createElement("button", {
+    className: "btn",
+    text: "Закрыть",
+    events: { click: () => closeModal() },
+  });
+  actions.appendChild(newGameButton);
+  actions.appendChild(closeButton);
   modalOverlay.appendChild(modal);
   modal.appendChild(title);
+  modal.appendChild(actions);
+
+  function closeModal() {
+    console.log("close");
+    modalOverlay.classList.remove("active");
+    modal.remove();
+    document.body.style.overflow = "auto";
+  }
+  function handleKeyDown(e) {
+    if (e.key === "Escape") closeModal();
+  }
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+  document.addEventListener("keydown", handleKeyDown);
   document.body.append(modalOverlay);
   modalOverlay.classList.add("active");
+  document.body.style.overflow = "hidden";
 }
 
 window.onload = function () {

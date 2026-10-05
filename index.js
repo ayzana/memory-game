@@ -50,7 +50,7 @@ function buildUI() {
     className: "btn",
     text: "Таблица лидеров",
     attrs: { "aria-label": "Открыть таблицу лидеров" },
-    events: { click: () => openLeaderboardModal() },
+    events: { click: () => openLeaderModal() },
   });
 
   navButtons.appendChild(newGameBtn);
@@ -217,7 +217,36 @@ function handleCardClick(index) {
 function handleNewGameClick() {
   startNewGame();
 }
+function openLeaderModal() {
+  const modalContent = createElement("div");
 
+  const table = createElement("table", { className: "leader-table" });
+  const thead = createElement("thead");
+  const trHead = createElement("tr");
+
+  ["№", "Ходы", "Дата"].forEach((thText) => {
+    trHead.appendChild(createElement("th", { text: thText }));
+  });
+  thead.appendChild(trHead);
+  table.appendChild(thead);
+
+  const tbody = createElement("tbody");
+
+  table.appendChild(tbody);
+  modalContent.appendChild(table);
+  let content;
+  content = createModal({
+    titleText: "Таблица лидеров",
+    modalContent: modalContent,
+    buttons: [
+      {
+        text: "Закрыть",
+        className: "btn btn-primary",
+        onClick: () => content.closeModal(),
+      },
+    ],
+  });
+}
 function openVictoryModal(moves) {
   const modalContent = createElement("div");
   const statsBox = createElement("div", { className: "victory-stats" });
@@ -239,7 +268,7 @@ function openVictoryModal(moves) {
   });
 }
 
-function createModal({ titleText, modalContent }) {
+function createModal({ titleText, modalContent, buttons }) {
   const modalOverlay = createElement("div", { className: "modal-overlay" });
   const modal = createElement("div", { className: "modal" });
   const title = createElement("p", {
@@ -248,23 +277,20 @@ function createModal({ titleText, modalContent }) {
   });
 
   const actions = createElement("div", { className: "modal-actions" });
-  const newGameButton = createElement("button", {
-    className: "btn",
-    text: "Новая игра",
-    events: {
-      click: () => {
-        closeModal();
-        startNewGame();
+
+  buttons.forEach((btn) => {
+    const button = createElement("button", {
+      className: btn.className || "btn",
+      text: btn.text,
+      events: {
+        click: () => {
+          btn.onClick(closeModal);
+        },
       },
-    },
+    });
+    actions.appendChild(button);
   });
-  const closeButton = createElement("button", {
-    className: "btn",
-    text: "Закрыть",
-    events: { click: () => closeModal() },
-  });
-  actions.appendChild(newGameButton);
-  actions.appendChild(closeButton);
+
   modalOverlay.appendChild(modal);
   modal.appendChild(title);
   modal.appendChild(modalContent);
@@ -286,6 +312,8 @@ function createModal({ titleText, modalContent }) {
   document.body.append(modalOverlay);
   modalOverlay.classList.add("active");
   document.body.style.overflow = "hidden";
+
+  return { closeModal };
 }
 
 window.onload = function () {

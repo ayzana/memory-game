@@ -40,7 +40,7 @@ function buildUI() {
   const navButtons = createElement("div", { className: "nav-buttons" });
 
   const newGameBtn = createElement("button", {
-    className: "btn btn-primary",
+    className: "btn",
     text: "Новая игра",
     attrs: { "aria-label": "Начать новую игру" },
     events: { click: handleNewGameClick },
@@ -241,7 +241,7 @@ function openLeaderModal() {
     buttons: [
       {
         text: "Закрыть",
-        className: "btn btn-primary",
+        className: "btn",
         onClick: () => content.closeModal(),
       },
     ],
@@ -262,9 +262,25 @@ function openVictoryModal(moves) {
   statsBox.appendChild(statsVal);
   modalContent.appendChild(statsBox);
 
-  createModal({
-    titleText: "Вы выиграли!",
+  let content;
+  content = createModal({
+    titleText: "Победа!",
     modalContent: modalContent,
+    buttons: [
+      {
+        text: "Новая игра",
+        className: "btn",
+        onClick: () => {
+          content.closeModal();
+          startNewGame();
+        },
+      },
+      {
+        text: "Закрыть",
+        className: "btn",
+        onClick: () => content.closeModal(),
+      },
+    ],
   });
 }
 

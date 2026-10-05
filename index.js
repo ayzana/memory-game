@@ -197,8 +197,7 @@ function handleCardClick(index) {
       console.log(pairs);
       if (pairs === 1) {
         setTimeout(() => {
-          createVictoryModal();
-          console.log("WIN");
+          openVictoryModal(moves);
         }, 400);
       }
     } else {
@@ -219,12 +218,33 @@ function handleNewGameClick() {
   startNewGame();
 }
 
-function createVictoryModal() {
+function openVictoryModal(moves) {
+  const modalContent = createElement("div");
+  const statsBox = createElement("div", { className: "victory-stats" });
+  const statsLabel = createElement("span", {
+    className: "counter-label",
+    text: "Количество ходов",
+  });
+  const statsVal = createElement("span", {
+    className: "victory-stats-val",
+    text: String(moves),
+  });
+  statsBox.appendChild(statsLabel);
+  statsBox.appendChild(statsVal);
+  modalContent.appendChild(statsBox);
+
+  createModal({
+    titleText: "Вы выиграли!",
+    modalContent: modalContent,
+  });
+}
+
+function createModal({ titleText, modalContent }) {
   const modalOverlay = createElement("div", { className: "modal-overlay" });
   const modal = createElement("div", { className: "modal" });
   const title = createElement("p", {
     className: "modal-title",
-    text: "Победа!",
+    text: titleText,
   });
 
   const actions = createElement("div", { className: "modal-actions" });
@@ -247,6 +267,7 @@ function createVictoryModal() {
   actions.appendChild(closeButton);
   modalOverlay.appendChild(modal);
   modal.appendChild(title);
+  modal.appendChild(modalContent);
   modal.appendChild(actions);
 
   function closeModal() {

@@ -332,6 +332,15 @@ function createModal({ titleText, modalContent, buttons }) {
   return { closeModal };
 }
 
+function getLeadersdData() {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (err) {
+    return [];
+  }
+}
+
 window.onload = function () {
   buildUI();
   startNewGame();

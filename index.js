@@ -1,3 +1,4 @@
+"use strict";
 import icons from "./cards-icons.json" with { type: "json" };
 
 let cards = [];
@@ -184,7 +185,6 @@ function handleCardClick(index) {
     movesValue.textContent = String(moves);
     const card1 = cards[flippedCards[0]];
     const card2 = cards[flippedCards[1]];
-    console.log(card1, card2);
 
     if (card1.pairId === card2.pairId) {
       card1.isMatched = true;
@@ -194,6 +194,13 @@ function handleCardClick(index) {
       pairs++;
       pairsValue.textContent = `${pairs} из 8`;
       flippedCards = [];
+      console.log(pairs);
+      if (pairs === 8) {
+        setTimeout(() => {
+          createVictoryModal();
+          console.log("WIN");
+        }, 400);
+      }
     } else {
       gridActive = true;
       selectCardsTime = setTimeout(() => {
@@ -210,6 +217,19 @@ function handleCardClick(index) {
 }
 function handleNewGameClick() {
   startNewGame();
+}
+
+function createVictoryModal() {
+  const modalOverlay = createElement("div", { className: "modal-overlay" });
+  const modal = createElement("div", { className: "modal" });
+  const title = createElement("p", {
+    className: "modal-title",
+    text: "Победа!",
+  });
+  modalOverlay.appendChild(modal);
+  modal.appendChild(title);
+  document.body.append(modalOverlay);
+  modalOverlay.classList.add("active");
 }
 
 window.onload = function () {

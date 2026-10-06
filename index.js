@@ -194,8 +194,9 @@ function handleCardClick(index) {
       pairs++;
       pairsValue.textContent = `${pairs} из 8`;
       flippedCards = [];
-      console.log(pairs);
-      if (pairs === 1) {
+
+      if (pairs === 8) {
+        saveLeaders(moves);
         setTimeout(() => {
           openVictoryModal(moves);
         }, 400);
@@ -217,36 +218,7 @@ function handleCardClick(index) {
 function handleNewGameClick() {
   startNewGame();
 }
-function openLeaderModal() {
-  const modalContent = createElement("div");
 
-  const table = createElement("table", { className: "leader-table" });
-  const thead = createElement("thead");
-  const trHead = createElement("tr");
-
-  ["№", "Ходы", "Дата"].forEach((thText) => {
-    trHead.appendChild(createElement("th", { text: thText }));
-  });
-  thead.appendChild(trHead);
-  table.appendChild(thead);
-
-  const tbody = createElement("tbody");
-
-  table.appendChild(tbody);
-  modalContent.appendChild(table);
-  let content;
-  content = createModal({
-    titleText: "Таблица лидеров",
-    modalContent: modalContent,
-    buttons: [
-      {
-        text: "Закрыть",
-        className: "btn",
-        onClick: () => content.closeModal(),
-      },
-    ],
-  });
-}
 function openVictoryModal(moves) {
   const modalContent = createElement("div");
   const statsBox = createElement("div", { className: "victory-stats" });
@@ -313,7 +285,6 @@ function createModal({ titleText, modalContent, buttons }) {
   modal.appendChild(actions);
 
   function closeModal() {
-    console.log("close");
     modalOverlay.classList.remove("active");
     modal.remove();
     document.body.style.overflow = "auto";
@@ -334,11 +305,78 @@ function createModal({ titleText, modalContent, buttons }) {
 
 function getLeadersdData() {
   try {
-    const data = localStorage.getItem(STORAGE_KEY);
+    const data = localStorage.getItem("leader");
     return data ? JSON.parse(data) : [];
   } catch (err) {
     return [];
   }
+}
+
+function saveLeaders(moves) {
+  const data = getLeadersdData();
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+  const formattedDate = `${dd}.${mm}.${yyyy}`;
+
+  data.push({
+    moves: moves,
+    date: formattedDate,
+    now: Date.now(),
+  });
+
+  data.sort((a, b) => {
+    if (a.moves !== b.moves) return a.moves - b.moves;
+    return a.timestamp - b.timestamp;
+  });
+
+  const top = data.slice(0, 10);
+  try {
+    localStorage.setItem("leader", JSON.stringify(top));
+  } catch (err) {
+    console.error("Ошибка сохранения", err);
+  }
+}
+function openLeaderModal() {
+  const modalContent = createElement("div");
+  const data = getLeadersdData();
+  console.log(data);
+  const table = createElement("table", { className: "leader-table" });
+  const thead = createElement("thead");
+  const trHead = createElement("tr");
+
+  ["№", "Ходы", "Дата"].forEach((thText) => {
+    trHead.appendChild(createElement("th", { text: thText }));
+  });
+  thead.appendChild(trHead);
+  table.appendChild(thead);
+
+  const tbody = createElement("tbody");
+
+  data.forEach((el, index) => {
+    const tr = createElement("tr");
+    tr.appendChild(createElement("td", { text: String(index + 1) }));
+    tr.appendChild(createElement("td", { text: String(el.moves) }));
+    tr.appendChild(createElement("td", { text: el.date }));
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  modalContent.appendChild(table);
+  let content;
+  content = createModal({
+    titleText: "Таблица лидеров",
+    modalContent: modalContent,
+    buttons: [
+      {
+        text: "Закрыть",
+        className: "btn",
+        onClick: () => content.closeModal(),
+      },
+    ],
+  });
 }
 
 window.onload = function () {

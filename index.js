@@ -342,29 +342,38 @@ function openLeaderModal() {
   const modalContent = createElement("div");
   const data = getLeadersdData();
   console.log(data);
-  const table = createElement("table", { className: "leader-table" });
-  const thead = createElement("thead");
-  const trHead = createElement("tr");
 
-  ["№", "Ходы", "Дата"].forEach((thText) => {
-    trHead.appendChild(createElement("th", { text: thText }));
-  });
-  thead.appendChild(trHead);
-  table.appendChild(thead);
+  if (data.length === 0) {
+    const msg = createElement("div", {
+      className: "empty-msg",
+      text: "Пока нет результатов",
+    });
+    modalContent.appendChild(msg);
+  } else {
+    const table = createElement("table", { className: "leader-table" });
+    const thead = createElement("thead");
+    const trHead = createElement("tr");
 
-  const tbody = createElement("tbody");
+    ["№", "Ходы", "Дата"].forEach((thText) => {
+      trHead.appendChild(createElement("th", { text: thText }));
+    });
+    thead.appendChild(trHead);
+    table.appendChild(thead);
 
-  data.forEach((el, index) => {
-    const tr = createElement("tr");
-    tr.appendChild(createElement("td", { text: String(index + 1) }));
-    tr.appendChild(createElement("td", { text: String(el.moves) }));
-    tr.appendChild(createElement("td", { text: el.date }));
+    const tbody = createElement("tbody");
 
-    tbody.appendChild(tr);
-  });
+    data.forEach((el, index) => {
+      const tr = createElement("tr");
+      tr.appendChild(createElement("td", { text: String(index + 1) }));
+      tr.appendChild(createElement("td", { text: String(el.moves) }));
+      tr.appendChild(createElement("td", { text: el.date }));
 
-  table.appendChild(tbody);
-  modalContent.appendChild(table);
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    modalContent.appendChild(table);
+  }
   let content;
   content = createModal({
     titleText: "Таблица лидеров",

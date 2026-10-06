@@ -287,6 +287,7 @@ function createModal({ titleText, modalContent, buttons }) {
   function closeModal() {
     modalOverlay.classList.remove("active");
     modal.remove();
+    modalOverlay.remove();
     document.body.style.overflow = "auto";
   }
   function handleKeyDown(e) {
